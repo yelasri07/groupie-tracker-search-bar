@@ -41,31 +41,17 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Search(searchValue string, data *[]database.Artists) error {
+
 	var artists []database.Artists
-	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
-	if err != nil {
-		return err
-	}
-
-	errChann := make(chan error, len(artists))
-	doneGoroutines := make(chan bool)
-
-	for i := 0; i < len(artists); i++ {
-		artist := artists[i]
-		go func(artist database.Artists) {
-			select {
-			case errChann <- database.GetForeignData(&artist):
-			case <-doneGoroutines:
-				return
-			}
-		}(artist)
-	}
-
-	for i := 0; i < len(artists); i++ {
-		if err := <-errChann; err != nil {
-			close(doneGoroutines)
+	cachedData, ok := cache.Load("Artists")
+	if ok {
+		artists = cachedData.([]database.Artists)
+	} else {
+		err := storeDataCache(&artists)
+		if err != nil {
 			return err
 		}
+		cache.Store("Artists", artists)
 	}
 
 	for _, artist := range artists {
