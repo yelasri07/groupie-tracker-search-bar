@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="assets/img/la-musique.png" type="image/x-icon" />
+  <link rel="stylesheet" href="/assets/css/infos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Groupie Tracker</title>
+</head>
+
+<body>
+  <div class="gradient"></div>
+  <a href="/">
+    <div class="home">
+      <i class="fa-solid fa-house"></i>
+    </div>
+  </a>
+  <div class="container">
+    <!-- hero -->
+    <div class="hero">
+      <div class="shadow-img">
+        <img class="img" src="{{.Image}}">
+        <img class="imgUnder" src="{{.Image}}" />
+      </div>
+      <div class="tiltls-shadow">
+        <h1>{{.Name}}</h1>
+        <p><i class="fa-solid fa-calendar-days"></i> {{.FirstAlbum}}</p>
+        <p>{{.CreationDate}}</p>
+      </div>
+    </div>
+    <!-- section -->
+    <div class="sections">
+      <div class="members">
+        <h3>Members :</h3>
+        <ul>
+          {{range .Members}}
+          <li><i class="fa-solid fa-user"></i>{{.}}</li>
+          {{end}}
+        </ul>
+      </div>
+      <div class="locations">
+        <h3>Locations :</h3>
+        <ul>
+          {{range .Loca.Locations}}
+          <li><i class="fa-solid fa-map-pin"></i> {{.}}</li>
+          {{end}}
+        </ul>
+      </div>
+      <div class="concert-date">
+        <h3>Concert Dates :</h3>
+        <ul>
+          {{range .ConDT.Dates}}
+          <li><i class="fa-regular fa-clock"></i>{{.}}</li>
+          {{end}}
+        </ul>
+      </div>
+
+      <div class="relations">
+        <h3>Relations :</h3>
+        <ul>
+          {{range $key, $values := .Rela.DatesLocations}}
+          <div class="rela">
+            <li class="parent"><i class="fa-solid fa-plus-minus"></i>{{$key}}</li>
+            <ul>
+              {{range $value := $values}}
+              <li class="childrens"><i class="fa-solid fa-link"></i>{{$value}}</li>
+              {{end}}
+            </ul>
+          </div>
+          {{end}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

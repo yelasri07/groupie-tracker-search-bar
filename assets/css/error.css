@@ -1,0 +1,59 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.gradient {
+  width: 100%;
+  background-color: #4b216c;
+  background-image: linear-gradient(to bottom, #592a7c, #371952);
+  height: 40vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0 0 400px 400px;
+  z-index: -999;
+}
+body {
+  background-color: #371951;
+}
+.container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 7.2vh;
+  color: white;
+}
+
+a {
+  color: white;
+}
+
+h2 {
+  font-size: 6.4vh;
+  color: white;
+}
+
+.content img {
+  width: 60vh;
+  transform: rotate(0deg);
+  animation: rotateImage 6s infinite linear;
+}
+
+@keyframes rotateImage {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
