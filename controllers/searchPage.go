@@ -48,16 +48,22 @@ func Search(searchValue string, data *[]database.Artists) error {
 	}
 
 	errChann := make(chan error, len(artists))
+	doneGoroutines := make(chan bool)
 
 	for i := 0; i < len(artists); i++ {
 		artist := artists[i]
-		go func() {
-			errChann <- database.GetForeignData(&artist)
-		}()
+		go func(artist database.Artists) {
+			select {
+			case errChann <- database.GetForeignData(&artist):
+			case <-doneGoroutines:
+				return
+			}
+		}(artist)
 	}
 
 	for i := 0; i < len(artists); i++ {
 		if err := <-errChann; err != nil {
+			close(doneGoroutines)
 			return err
 		}
 	}
