@@ -27,6 +27,10 @@ func FetchAPI(url string, s any) error {
 func GetForeignData(artist *Artists) error {
 	cha := make(chan error, 3)
 
+	if artist.ID == 0 {
+		return nil
+	}
+
 	go func() {
 		cha <- FetchAPI(artist.Locations, &artist.Loca)
 	}()
