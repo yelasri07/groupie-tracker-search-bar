@@ -20,37 +20,35 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := Search(strings.ToLower(searchValue))
+	ArtistsData, err := Search(strings.ToLower(searchValue))
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = RenderTempalte(w, "./templates/index.html", data, http.StatusOK)
+	err = RenderTempalte(w, "./templates/index.html", ArtistsData, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 }
 
-func Search(searchValue string) ([]database.Artists, error) {
-	var artists []database.Artists
+func Search(searchValue string) (data, error) {
+	var ArtistsData data
 
-	cachedData, ok := cache.Load("Artists")
+	cachedArtistsData, ok := cache.Load("Artists")
 	if ok {
-		artists = cachedData.([]database.Artists)
+		ArtistsData.AllArtists = cachedArtistsData.([]database.Artists)
 	} else {
-		err := storeDataCache(&artists)
+		err := storeDataCache(&ArtistsData.AllArtists)
 		if err != nil {
-			return nil, err
+			return data{}, err
 		}
-		cache.Store("Artists", artists)
+		cache.Store("Artists", ArtistsData.AllArtists)
 	}
 
-	var data []database.Artists
-
 	var firstSearch bool
-	for _, artist := range artists {
+	for _, artist := range ArtistsData.AllArtists {
 		firstSearch = false
 		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
 			artist.FirstAlbum == searchValue ||
@@ -73,10 +71,10 @@ func Search(searchValue string) ([]database.Artists, error) {
 		}
 
 		if firstSearch {
-			data = append(data, artist)
+			ArtistsData.CurrentArtists = append(ArtistsData.CurrentArtists, artist)
 		}
 
 	}
 
-	return data, nil
+	return ArtistsData, nil
 }

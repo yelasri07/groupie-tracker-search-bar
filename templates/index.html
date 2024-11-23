@@ -31,7 +31,7 @@
         <form action="/sch" method="GET">
             <input list="artists" name="s" type="search" placeholder="Type your search..." required>
             <datalist id="artists">
-                {{range .}}
+                {{range .AllArtists}}
                     <option value="{{.Name}}">{{.Name}} - name</option>
                 {{end}}
             </datalist>
@@ -39,7 +39,7 @@
         </form>
     </div>
     <div class="container">
-        {{range .}}
+        {{range .CurrentArtists}}
         <div>
             <a href="/infos?id={{.ID}}">
                 <img loading="lazy" width="240" height="240" src="{{.Image}}">

@@ -9,6 +9,11 @@ import (
 
 var cache sync.Map
 
+type data struct{
+	AllArtists []database.Artists
+	CurrentArtists []database.Artists
+}
+
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		renderError(w, "Page Not Found", http.StatusNotFound)
@@ -20,20 +25,22 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var artists []database.Artists
+	var ArtistsData data
 
 	if cachedData, ok := cache.Load("Artists"); ok {
-		artists = cachedData.([]database.Artists)
+		ArtistsData.AllArtists = cachedData.([]database.Artists)
 	} else {
-		err := storeDataCache(&artists)
+		err := storeDataCache(&ArtistsData.AllArtists)
 		if err != nil {
 			renderError(w, "Server Error", http.StatusInternalServerError)
 			return
 		}
-		cache.Store("Artists", artists)
+		cache.Store("Artists", ArtistsData.AllArtists)
 	}
 
-	err := RenderTempalte(w, "./templates/index.html", artists, http.StatusOK)
+	ArtistsData.CurrentArtists = ArtistsData.AllArtists
+
+	err := RenderTempalte(w, "./templates/index.html", ArtistsData, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
