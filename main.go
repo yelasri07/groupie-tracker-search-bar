@@ -9,7 +9,7 @@ import (
 	"groupietracker/controllers"
 )
 
-const port string = ":8082"
+const port string = ":8080"
 
 func main() {
 	if len(os.Args) != 1 {

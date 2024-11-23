@@ -33,6 +33,12 @@
             <datalist id="artists">
                 {{range .AllArtists}}
                     <option value="{{.Name}}">{{.Name}} - name</option>
+                    {{range .Members}}
+                    <option value="{{.}}">{{.}} - member</option>
+                    {{end}}
+                    {{range .Loca.Locations}}
+                    <option value="{{.}}">{{.}} - location</option>
+                    {{end}}
                 {{end}}
             </datalist>
             <button type="submit">Search</button>
