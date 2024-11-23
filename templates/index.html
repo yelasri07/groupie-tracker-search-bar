@@ -32,7 +32,7 @@
             <input list="artists" name="s" type="search" placeholder="Type your search..." required>
             <datalist id="artists">
                 {{range .AllArtists}}
-                    <option value="{{.Name}}">{{.Name}} - name</option>
+                    <option value="{{.Name}}">{{.Name}} - artist/band</option>
                     {{range .Members}}
                     <option value="{{.}}">{{.}} - member</option>
                     {{end}}

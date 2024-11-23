@@ -20,7 +20,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ArtistsData, err := Search(strings.ToLower(searchValue))
+	ArtistsData, err := Search(strings.TrimSpace(strings.ToLower(searchValue)))
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
