@@ -35,3 +35,8 @@ type ErrorPage struct {
 	Status int
 	Type   string
 }
+
+type Data struct {
+	AllArtists     []Artists
+	CurrentArtists []Artists
+}

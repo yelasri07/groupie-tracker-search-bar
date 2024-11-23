@@ -2,10 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 
-	"groupietracker/database"
+	"groupietracker/funcs"
 )
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -15,12 +14,12 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	searchValue := strings.TrimSpace(r.URL.Query().Get("s"))
-	if searchValue == "" || len(searchValue) > 150 {
+	if searchValue == "" || len(searchValue) > 50 {
 		renderError(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
 
-	ArtistsData, err := Search(strings.ToLower(searchValue))
+	ArtistsData, err := funcs.Search(strings.ToLower(searchValue))
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
@@ -31,50 +30,4 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
-}
-
-func Search(searchValue string) (data, error) {
-	var ArtistsData data
-
-	cachedArtistsData, ok := cache.Load("Artists")
-	if ok {
-		ArtistsData.AllArtists = cachedArtistsData.([]database.Artists)
-	} else {
-		err := storeDataCache(&ArtistsData.AllArtists)
-		if err != nil {
-			return data{}, err
-		}
-		cache.Store("Artists", ArtistsData.AllArtists)
-	}
-
-	var firstSearch bool
-	for _, artist := range ArtistsData.AllArtists {
-		firstSearch = false
-		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
-			artist.FirstAlbum == searchValue ||
-			strconv.Itoa(artist.CreationDate) == searchValue {
-			firstSearch = true
-		}
-
-		for _, member := range artist.Members {
-			if strings.Contains(strings.ToLower(member), searchValue) {
-				firstSearch = true
-				continue
-			}
-		}
-
-		for _, localtion := range artist.Loca.Locations {
-			if strings.Contains(strings.ToLower(localtion), searchValue) {
-				firstSearch = true
-				continue
-			}
-		}
-
-		if firstSearch {
-			ArtistsData.CurrentArtists = append(ArtistsData.CurrentArtists, artist)
-		}
-
-	}
-
-	return ArtistsData, nil
 }
