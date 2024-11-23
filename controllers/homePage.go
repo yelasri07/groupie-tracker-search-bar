@@ -52,12 +52,11 @@ func storeDataCache(artists *[]database.Artists) error {
 	errChann := make(chan error, len(*artists))
 
 	for i := 0; i < len(*artists); i++ {
-		artist := (*artists)[i]
 		wg.Add(1)
-		go func(artist database.Artists) {
+		go func(index int) {
 			defer wg.Done()
-			errChann <- database.GetForeignData(&artist)
-		}(artist)
+			errChann <- database.GetForeignData(&(*artists)[index])
+		}(i)
 	}
 
 	wg.Wait()

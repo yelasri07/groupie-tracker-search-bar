@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 func FetchAPI(url string, s any) error {
@@ -25,11 +26,10 @@ func FetchAPI(url string, s any) error {
 }
 
 func GetForeignData(artist *Artists) error {
+	var mu sync.Mutex
+	defer mu.Unlock()
+	mu.Lock()
 	cha := make(chan error, 3)
-
-	if artist.ID == 0 {
-		return nil
-	}
 
 	go func() {
 		cha <- FetchAPI(artist.Locations, &artist.Loca)
@@ -58,6 +58,10 @@ func GetArtist(url string) (Artists, error) {
 	err := FetchAPI(url, &Artist)
 	if err != nil {
 		return Artists{}, err
+	}
+
+	if Artist.ID == 0 {
+		return Artists{}, nil
 	}
 
 	err = GetForeignData(&Artist)

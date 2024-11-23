@@ -53,7 +53,7 @@ func Search(searchValue string) ([]database.Artists, error) {
 	for _, artist := range artists {
 		firstSearch = false
 		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
-			strings.Contains(strings.ToLower(artist.FirstAlbum), searchValue) ||
+			artist.FirstAlbum == searchValue ||
 			strconv.Itoa(artist.CreationDate) == searchValue {
 			firstSearch = true
 		}
