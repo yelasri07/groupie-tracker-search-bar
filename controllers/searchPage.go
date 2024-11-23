@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"groupietracker/database"
@@ -34,7 +35,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 func Search(searchValue string) ([]database.Artists, error) {
 	var artists []database.Artists
-	
+
 	cachedData, ok := cache.Load("Artists")
 	if ok {
 		artists = cachedData.([]database.Artists)
@@ -48,15 +49,31 @@ func Search(searchValue string) ([]database.Artists, error) {
 
 	var data []database.Artists
 
+	var firstSearch bool
 	for _, artist := range artists {
-		if strings.HasPrefix(strings.ToLower(artist.Name), searchValue) {
-			data = append(data, artist)
+		firstSearch = false
+		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
+			strings.Contains(strings.ToLower(artist.FirstAlbum), searchValue) ||
+			strconv.Itoa(artist.CreationDate) == searchValue {
+			firstSearch = true
 		}
 
 		for _, member := range artist.Members {
-			if strings.HasPrefix(strings.ToLower(member), searchValue) {
-				data = append(data, artist)
+			if strings.Contains(strings.ToLower(member), searchValue) {
+				firstSearch = true
+				continue
 			}
+		}
+
+		for _, localtion := range artist.Loca.Locations {
+			if strings.Contains(strings.ToLower(localtion), searchValue) {
+				firstSearch = true
+				continue
+			}
+		}
+
+		if firstSearch {
+			data = append(data, artist)
 		}
 
 	}
