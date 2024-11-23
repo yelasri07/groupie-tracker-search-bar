@@ -9,6 +9,37 @@ import (
 
 var cache sync.Map
 
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		renderError(w, "Page Not Found", http.StatusNotFound)
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		renderError(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var artists []database.Artists
+
+	if cachedData, ok := cache.Load("Artists"); ok {
+		artists = cachedData.([]database.Artists)
+	} else {
+		err := storeDataCache(&artists)
+		if err != nil {
+			renderError(w, "Server Error", http.StatusInternalServerError)
+			return
+		}
+		cache.Store("Artists", artists)
+	}
+
+	err := RenderTempalte(w, "./templates/index.html", artists, http.StatusOK)
+	if err != nil {
+		renderError(w, "Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
 func storeDataCache(artists *[]database.Artists) error {
 	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 	if err != nil {
@@ -39,40 +70,4 @@ func storeDataCache(artists *[]database.Artists) error {
 	}
 
 	return nil
-}
-
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		if r.Method == http.MethodGet {
-			var artists []database.Artists
-			if cachedData, ok := cache.Load("Artists"); ok {
-				artists = cachedData.([]database.Artists)
-			} else {
-				err := storeDataCache(&artists)
-				if err != nil {
-					e := database.ErrorPage{Status: 500, Type: "Server Error"}
-					RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
-					return
-				}
-				cache.Store("Artists", artists)
-			}
-
-			err := RenderTempalte(w, "./templates/index.html", artists, http.StatusOK)
-			if err != nil {
-				e := database.ErrorPage{Status: 500, Type: "Server Error"}
-				RenderTempalte(w, "templates/error.html", e, http.StatusInternalServerError)
-				return
-			}
-
-		} else {
-			e := database.ErrorPage{Status: 405, Type: "Method Not Allowed"}
-			RenderTempalte(w, "templates/error.html", e, http.StatusMethodNotAllowed)
-			return
-		}
-	default:
-		e := database.ErrorPage{Status: 404, Type: "Page Not Found"}
-		RenderTempalte(w, "templates/error.html", e, http.StatusNotFound)
-		return
-	}
 }

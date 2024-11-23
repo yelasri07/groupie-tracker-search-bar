@@ -47,3 +47,19 @@ func GetForeignData(artist *Artists) error {
 
 	return nil
 }
+
+func GetArtist(url string) (Artists, error) {
+	var Artist Artists
+
+	err := FetchAPI(url, &Artist)
+	if err != nil {
+		return Artists{}, err
+	}
+
+	err = GetForeignData(&Artist)
+	if err != nil {
+		return Artists{}, err
+	}
+
+	return Artist, nil
+}
