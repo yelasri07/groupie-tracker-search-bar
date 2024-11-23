@@ -14,13 +14,13 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	searchValue := r.URL.Query().Get("s")
-	if searchValue == "" {
+	searchValue := strings.TrimSpace(r.URL.Query().Get("s"))
+	if searchValue == "" || len(searchValue) > 150 {
 		renderError(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
 
-	ArtistsData, err := Search(strings.TrimSpace(strings.ToLower(searchValue)))
+	ArtistsData, err := Search(strings.ToLower(searchValue))
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
