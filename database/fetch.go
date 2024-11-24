@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"sync"
 )
 
 func FetchAPI(url string, s any) error {
@@ -26,9 +25,6 @@ func FetchAPI(url string, s any) error {
 }
 
 func GetForeignData(artist *Artists) error {
-	var mu sync.Mutex
-	defer mu.Unlock()
-	mu.Lock()
 	cha := make(chan error, 3)
 
 	go func() {

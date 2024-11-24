@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"groupietracker/funcs"
+	"groupietracker/functions"
 )
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +19,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ArtistsData, err := funcs.Search(strings.ToLower(searchValue))
+	ArtistsData, err := functions.Search(strings.ToLower(searchValue))
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
