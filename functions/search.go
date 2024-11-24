@@ -24,6 +24,7 @@ func Search(searchValue string) (database.Data, error) {
 	var firstSearch bool
 	for _, artist := range ArtistsData.AllArtists {
 		firstSearch = false
+
 		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
 			artist.FirstAlbum == searchValue ||
 			strconv.Itoa(artist.CreationDate) == searchValue {
@@ -33,14 +34,14 @@ func Search(searchValue string) (database.Data, error) {
 		for _, member := range artist.Members {
 			if strings.Contains(strings.ToLower(member), searchValue) {
 				firstSearch = true
-				continue
+				break
 			}
 		}
 
 		for _, localtion := range artist.Loca.Locations {
 			if strings.Contains(strings.ToLower(localtion), searchValue) {
 				firstSearch = true
-				continue
+				break
 			}
 		}
 

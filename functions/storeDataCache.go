@@ -8,8 +8,6 @@ import (
 
 var Cache sync.Map
 
-
-
 func StoreDataCache(artists *[]database.Artists) error {
 	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 	if err != nil {
