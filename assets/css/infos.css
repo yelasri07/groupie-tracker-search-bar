@@ -191,7 +191,7 @@ li {
     font-weight: 900;
   }
 }
-@media screen and (max-width: 320px){
+@media screen and (max-width: 320px) {
   .sections h3 + ul {
     padding: 5px;
   }

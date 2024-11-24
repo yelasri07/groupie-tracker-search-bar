@@ -1,59 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/img/la-musique.png" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="assets/img/la-musique.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Groupie Tracker</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="gradient"></div>
     <div class="play">
-        <i class="fa-solid fa-music"></i>
+      <i class="fa-solid fa-music"></i>
     </div>
     <div class="music1">
-        <i class="fa-solid fa-music"></i>
+      <i class="fa-solid fa-music"></i>
     </div>
     <div class="music2">
-        <i class="fa-solid fa-music"></i>
+      <i class="fa-solid fa-music"></i>
     </div>
     <div class="title">
-        <h1>Groupie Tracker</h1>
-        <p>All bands in one place</p>
+      <h1>Groupie Tracker</h1>
+      <p>All bands in one place</p>
     </div>
     <div class="search">
-        <form action="/sch" method="GET">
-            <input list="artists" name="s" type="search" placeholder="Type your search..." required>
-            <datalist id="artists">
-                {{range .AllArtists}}
-                    <option value="{{.Name}}">{{.Name}} - artist/band</option>
-                    {{range .Members}}
-                    <option value="{{.}}">{{.}} - member</option>
-                    {{end}}
-                    {{range .Loca.Locations}}
-                    <option value="{{.}}">{{.}} - location</option>
-                    {{end}}
-                {{end}}
-            </datalist>
-            <button type="submit">Search</button>
-        </form>
+      <form action="/sch" method="GET">
+        <input
+          list="artists"
+          name="s"
+          type="search"
+          placeholder="Type your search..."
+          required
+        />
+        <datalist id="artists">
+          {{range .AllArtists}}
+          <option value="{{.Name}}">{{.Name}} - artist/band</option>
+          {{range .Members}}
+          <option value="{{.}}">{{.}} - member</option>
+          {{end}} {{range .Loca.Locations}}
+          <option value="{{.}}">{{.}} - location</option>
+          {{end}} {{end}}
+        </datalist>
+        <button type="submit">Search</button>
+      </form>
     </div>
     <div class="container">
-        {{range .CurrentArtists}}
-        <div>
-            <a href="/infos?id={{.ID}}">
-                <img loading="lazy" width="240" height="240" src="{{.Image}}">
-                <h4>{{.Name}}</h4>
-            </a>
-        </div>
-        {{end}}
+      {{range .CurrentArtists}}
+      <div>
+        <a href="/infos?id={{.ID}}">
+          <img loading="lazy" width="240" height="240" src="{{.Image}}" />
+          <h4>{{.Name}}</h4>
+        </a>
+      </div>
+      {{end}}
     </div>
-</body>
-
+  </body>
 </html>
