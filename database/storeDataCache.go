@@ -1,15 +1,13 @@
-package functions
+package database
 
 import (
 	"sync"
-
-	"groupietracker/database"
 )
 
 var Cache sync.Map
 
-func StoreDataCache(artists *[]database.Artists) error {
-	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
+func StoreDataCache(artists *[]Artists) error {
+	err := FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 	if err != nil {
 		return err
 	}
@@ -23,7 +21,7 @@ func StoreDataCache(artists *[]database.Artists) error {
 		wg.Add(1)
 		go func(index int) {
 			defer wg.Done()
-			errChann <- database.GetForeignData(&(*artists)[index])
+			errChann <- GetForeignData(&(*artists)[index])
 		}(i)
 	}
 

@@ -1,5 +1,10 @@
 package database
 
+type Data struct {
+	AllArtists     []Artists
+	CurrentArtists []Artists
+}
+
 type Artists struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
@@ -34,9 +39,4 @@ type Relation struct {
 type ErrorPage struct {
 	Status int
 	Type   string
-}
-
-type Data struct {
-	AllArtists     []Artists
-	CurrentArtists []Artists
 }

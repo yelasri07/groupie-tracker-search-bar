@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"groupietracker/database"
-	"groupietracker/functions"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,15 +19,15 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	var ArtistsData database.Data
 
-	if cachedData, ok := functions.Cache.Load("Artists"); ok {
+	if cachedData, ok := database.Cache.Load("Artists"); ok {
 		ArtistsData.AllArtists = cachedData.([]database.Artists)
 	} else {
-		err := functions.StoreDataCache(&ArtistsData.AllArtists)
+		err := database.StoreDataCache(&ArtistsData.AllArtists)
 		if err != nil {
 			renderError(w, "Server Error", http.StatusInternalServerError)
 			return
 		}
-		functions.Cache.Store("Artists", ArtistsData.AllArtists)
+		database.Cache.Store("Artists", ArtistsData.AllArtists)
 	}
 
 	ArtistsData.CurrentArtists = ArtistsData.AllArtists
