@@ -115,3 +115,27 @@ body{
         font-size: 18px;
     }
 }
+
+@media screen and (max-width: 288px) {
+    .container > div img{
+        width: 200px;
+        height: 200px;
+    }
+
+    .container > div > a{
+        height: 260px;
+    }
+}
+
+@media screen and (max-width: 200px) {
+    .container > div img{
+        width: 150px;
+        height: 150px;
+        gap: 10px;
+    }
+
+    .container > div > a{
+        height: 190px;
+        gap: 5px;
+    }
+}
