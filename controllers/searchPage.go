@@ -15,7 +15,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	searchValue := strings.TrimSpace(r.URL.Query().Get("s"))
-	if searchValue == "" || len(searchValue) > 50 {
+	if searchValue == "" || len(searchValue) > 100 {
 		renderError(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
