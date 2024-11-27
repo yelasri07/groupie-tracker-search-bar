@@ -8,15 +8,15 @@
 }
 
 body{
-    background-color: #371951;
+    background-color: #10151A;
     width: 100%;
     min-height: 100vh;
 }
 
 .gradient{
     width: 100%;
-    background-color: #4b216c;
-    background-image: linear-gradient(to bottom, #592a7c, #371952);
+    background-color: #203647;
+    background-image: linear-gradient(to bottom, #2D3E50, #10151A);
     height: 40vh;
     position: absolute;
     top: 0;
@@ -26,7 +26,7 @@ body{
 }
 
 .title{
-    color: #fff;
+    color: #EAEAEA;
     text-align: center;
     margin: 128px 0;
     display: flex;
@@ -50,7 +50,7 @@ body{
     top: 64px;
     right: 10%;
     color: #fff;
-    background-color: #8128EB;
+    background-color: #1F8AC0;
     border-radius: 17px;
     padding: 10px 20px;
     cursor: pointer;
@@ -58,7 +58,7 @@ body{
 
 .music2{
     position: absolute;
-    color: #64378b;
+    color: #527DA1;
     top: 160px;
     left: 25%;
     font-size: 20px;
@@ -68,7 +68,7 @@ body{
 
 .music1{
     position: absolute;
-    color: #64378b;
+    color: #527DA1;
     top: 64px;
     left: 10%;
     font-size: 40px;
@@ -86,9 +86,10 @@ body{
 }
 
 .container > div > a{
-    background-color: #4E3966;
+    transition: .6s;
+    background-color: #1F2A38;
     border-radius: 32px;
-    border: solid 0.1px #fff;
+    border: solid 0.1px #eaeaea55;
     height: 336px;
     display: flex;
     flex-direction: column;
@@ -97,13 +98,17 @@ body{
     align-items: center;
 }
 
+.container > div > a:hover{
+    scale: 1.05;
+}
+
 .container > div img{
     border-radius: 27px;
     opacity: .9;
 }
 
 .container > div h4{
-    color: #fff;
+    color: #EAEAEA;
     text-decoration: none;
 }
 
@@ -122,6 +127,10 @@ body{
         height: 200px;
     }
 
+    .container > div h4{
+        font-size: 12px;
+    }
+
     .container > div > a{
         height: 260px;
     }
@@ -132,6 +141,10 @@ body{
         width: 150px;
         height: 150px;
         gap: 10px;
+    }
+
+    .container > div h4{
+        font-size: 7px;
     }
 
     .container > div > a{

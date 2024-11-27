@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"groupietracker/controllers"
+	"groupietracker/routers"
 )
 
-const port string = ":8080"
+const port string = ":8082"
 
 func main() {
 	if len(os.Args) != 1 {
@@ -17,11 +17,7 @@ func main() {
 		return
 	}
 
-	http.HandleFunc("/assets/img/", controllers.ImagesHandler)
-	http.HandleFunc("/assets/css/", controllers.CssHandler)
-	http.HandleFunc("/", controllers.IndexHandler)
-	http.HandleFunc("/infos", controllers.InfosHandler)
-	http.HandleFunc("/sch", controllers.SearchHandler)
+	routers.Routers()
 	fmt.Println("http://localhost" + port + "/")
 	log.Fatal(http.ListenAndServe(port, nil))
 }

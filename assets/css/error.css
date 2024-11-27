@@ -5,8 +5,8 @@
 }
 .gradient {
   width: 100%;
-  background-color: #4b216c;
-  background-image: linear-gradient(to bottom, #592a7c, #371952);
+  background-color: #203647;
+  background-image: linear-gradient(to bottom, #2D3E50, #10151A);
   height: 40vh;
   position: absolute;
   top: 0;
@@ -15,45 +15,47 @@
   z-index: -999;
 }
 body {
-  background-color: #371951;
+  background-color: #10151A;
+  color: #EAEAEA;
 }
 .container {
-  width: 100vw;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
 }
 
 .content {
-  text-align: center;
   margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
-  font-size: 7.2vh;
-  color: white;
+  font-size: 50px;
+  color: #EAEAEA;
 }
 
 a {
-  color: white;
+  color: #1F8AC0;
+  text-decoration: none;
 }
 
 h2 {
-  font-size: 6.4vh;
-  color: white;
+  font-size: 50px;
+  color: #B0C4DE;
+  margin-top: 20px;
 }
 
 .content img {
-  width: 60vh;
-  transform: rotate(0deg);
-  animation: rotateImage 6s infinite linear;
+  width: 450px;
+  border-radius: 50%;
 }
 
-@keyframes rotateImage {
-  from {
-    transform: rotate(0deg);
+@media screen and (max-width: 467px) {
+  h1, h2 {
+    font-size: 25px;
   }
-  to {
-    transform: rotate(360deg);
+  .content img{
+    width: 250px;
   }
 }
