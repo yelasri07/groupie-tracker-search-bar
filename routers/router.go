@@ -7,8 +7,7 @@ import (
 )
 
 func Routers() {
-	http.HandleFunc("/assets/img/", controllers.ImagesHandler)
-	http.HandleFunc("/assets/css/", controllers.CssHandler)
+	http.HandleFunc("/assets/", controllers.AssetsHandler)
 	http.HandleFunc("/", controllers.IndexHandler)
 	http.HandleFunc("/infos", controllers.InfosHandler)
 }

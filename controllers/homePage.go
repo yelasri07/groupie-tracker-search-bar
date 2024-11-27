@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"groupietracker/cache"
 	"groupietracker/database"
 )
 
@@ -19,10 +20,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	var ArtistsData database.Data
 
-	if cachedData, ok := database.Cache.Load("Artists"); ok {
+	if cachedData, ok := cache.GetFromCache("Artists"); ok {
 		ArtistsData.AllArtists = cachedData.([]database.Artists)
 	} else {
-		err := database.StoreDataCache(&ArtistsData.AllArtists)
+		err := cache.SaveToCache("Artists")
 		if err != nil {
 			renderError(w, "Server Error", http.StatusInternalServerError)
 			return
