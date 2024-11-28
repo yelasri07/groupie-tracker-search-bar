@@ -23,12 +23,11 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if cachedData, ok := cache.GetFromCache("Artists"); ok {
 		ArtistsData.AllArtists = cachedData.([]database.Artists)
 	} else {
-		err := cache.SaveToCache("Artists")
+		err := cache.SaveToCache(&ArtistsData.AllArtists,"Artists")
 		if err != nil {
 			renderError(w, "Server Error", http.StatusInternalServerError)
 			return
 		}
-		database.Cache.Store("Artists", ArtistsData.AllArtists)
 	}
 
 	ArtistsData.CurrentArtists = ArtistsData.AllArtists

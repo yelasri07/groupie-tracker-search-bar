@@ -8,7 +8,7 @@ import (
 
 var Cache sync.Map
 
-func SaveToCache(artists *[]database.Artists,key string, value any) error {
+func SaveToCache(artists *[]database.Artists, key string) error {
 	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 	if err != nil {
 		return err
@@ -36,6 +36,8 @@ func SaveToCache(artists *[]database.Artists,key string, value any) error {
 		}
 	}
 
+	Cache.Store(key, *artists)
+
 	return nil
 }
 
@@ -45,7 +47,4 @@ func GetFromCache(key string) (any, bool) {
 
 func RemoveFromCache(key string) {
 	Cache.Delete(key)
-}
-
-func StoreDataCache(artists *[]database.Artists) error {
 }

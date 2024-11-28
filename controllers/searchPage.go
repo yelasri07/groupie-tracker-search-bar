@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"groupietracker/cache"
 	"groupietracker/database"
 )
 
@@ -36,15 +37,13 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 func Search(searchValue string) (database.Data, error) {
 	var ArtistsData database.Data
 
-	cachedArtistsData, ok := database.Cache.Load("Artists")
-	if ok {
+	if cachedArtistsData, ok := cache.GetFromCache("Artists"); ok {
 		ArtistsData.AllArtists = cachedArtistsData.([]database.Artists)
 	} else {
-		err := database.StoreDataCache(&ArtistsData.AllArtists)
+		err := cache.SaveToCache(&ArtistsData.AllArtists, "Artists")
 		if err != nil {
 			return database.Data{}, err
 		}
-		database.Cache.Store("Artists", ArtistsData.AllArtists)
 	}
 
 	var firstSearch bool
