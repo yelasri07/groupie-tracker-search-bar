@@ -3,13 +3,13 @@ package cache
 import (
 	"sync"
 
-	"groupietracker/database"
+	"groupietracker/models"
 )
 
 var Cache sync.Map
 
-func SaveToCache(artists *[]database.Artists, key string) error {
-	err := database.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
+func SaveToCache(artists *[]models.Artists, key string) error {
+	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func SaveToCache(artists *[]database.Artists, key string) error {
 		wg.Add(1)
 		go func(index int) {
 			defer wg.Done()
-			errChann <- database.GetForeignData(&(*artists)[index])
+			errChann <- models.GetForeignData(&(*artists)[index])
 		}(i)
 	}
 

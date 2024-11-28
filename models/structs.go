@@ -1,4 +1,4 @@
-package database
+package models
 
 type Data struct {
 	AllArtists     []Artists

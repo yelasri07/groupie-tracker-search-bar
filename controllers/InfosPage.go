@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"groupietracker/database"
+	"groupietracker/models"
 )
 
 func InfosHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +27,7 @@ func InfosHandler(w http.ResponseWriter, r *http.Request) {
 
 	id = strconv.Itoa(ID)
 
-	artist, err := database.GetArtist("https://groupietrackers.herokuapp.com/api/artists/" + id)
+	artist, err := models.GetArtist("https://groupietrackers.herokuapp.com/api/artists/" + id)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
@@ -42,7 +42,7 @@ func InfosHandler(w http.ResponseWriter, r *http.Request) {
 		artist.Image = "./assets/img/3ib.jpg"
 	}
 
-	err = RenderTempalte(w, "./templates/infos.html", artist, http.StatusOK)
+	err = RenderTempalte(w, "./views/infos.html", artist, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"groupietracker/cache"
-	"groupietracker/database"
+	"groupietracker/models"
 )
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,22 +27,22 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = RenderTempalte(w, "./templates/index.html", ArtistsData, http.StatusOK)
+	err = RenderTempalte(w, "./views/index.html", ArtistsData, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 }
 
-func Search(searchValue string) (database.Data, error) {
-	var ArtistsData database.Data
+func Search(searchValue string) (models.Data, error) {
+	var ArtistsData models.Data
 
 	if cachedArtistsData, ok := cache.GetFromCache("Artists"); ok {
-		ArtistsData.AllArtists = cachedArtistsData.([]database.Artists)
+		ArtistsData.AllArtists = cachedArtistsData.([]models.Artists)
 	} else {
 		err := cache.SaveToCache(&ArtistsData.AllArtists, "Artists")
 		if err != nil {
-			return database.Data{}, err
+			return models.Data{}, err
 		}
 	}
 
