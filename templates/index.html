@@ -51,9 +51,9 @@
           {{end}} {{range .Loca.Locations}}
           <option value="{{.}}">{{.}} - location</option>
           {{end}} {{if .CreationDate}}
-          <option value="{{.}}">{{.}} - Creation Date</option>
+          <option value="{{.CreationDate}}">{{.CreationDate}} - Creation Date</option>
           {{end}} {{if .FirstAlbum}}
-          <option value="{{.}}">{{.}} - First Album</option>
+          <option value="{{.FirstAlbum}}">{{.FirstAlbum}} - First Album</option>
           {{end}} {{end}}
         </datalist>
         <button type="submit">Search</button>
