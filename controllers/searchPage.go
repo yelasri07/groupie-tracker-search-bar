@@ -7,6 +7,7 @@ import (
 
 	"groupietracker/cache"
 	"groupietracker/models"
+	"groupietracker/utils"
 )
 
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,6 +46,10 @@ func Search(searchValue string) (models.Data, error) {
 			return models.Data{}, err
 		}
 	}
+
+	ArtistsData.RmDup = make(map[string]string)
+
+	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.AllArtists, ArtistsData.RmDup)
 
 	var firstSearch bool
 	for _, artist := range ArtistsData.AllArtists {

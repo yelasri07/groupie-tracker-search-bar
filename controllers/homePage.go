@@ -24,7 +24,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if cachedData, ok := cache.GetFromCache("Artists"); ok {
 		ArtistsData.AllArtists = cachedData.([]models.Artists)
 	} else {
-		err := cache.SaveToCache(&ArtistsData.AllArtists,"Artists")
+		err := cache.SaveToCache(&ArtistsData.AllArtists, "Artists")
 		if err != nil {
 			renderError(w, "Server Error", http.StatusInternalServerError)
 			return
@@ -33,7 +33,9 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	ArtistsData.CurrentArtists = ArtistsData.AllArtists
 
-	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.RmDup)
+	ArtistsData.RmDup = make(map[string]string)
+
+	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.AllArtists, ArtistsData.RmDup)
 
 	err := RenderTempalte(w, "./views/index.html", ArtistsData, http.StatusOK)
 	if err != nil {

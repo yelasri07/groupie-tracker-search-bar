@@ -44,6 +44,12 @@
           required
         />
         <datalist id="artists">
+          {{range $key, $value := .RmDup}}
+          <option value="{{$key}}">{{$key}} - {{$value}}</option>
+      {{end}}
+
+
+<!--           
           {{range .AllArtists}}
           <option value="{{.Name}}">{{.Name}} - artist/band</option>
           {{range .Members}}
@@ -54,7 +60,7 @@
           <option value="{{.CreationDate}}">{{.CreationDate}} - Creation Date</option>
           {{end}} {{if .FirstAlbum}}
           <option value="{{.FirstAlbum}}">{{.FirstAlbum}} - First Album</option>
-          {{end}} {{end}}
+          {{end}} {{end}} -->
         </datalist>
         <button type="submit">Search</button>
       </form>
