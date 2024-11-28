@@ -3,6 +3,7 @@ package models
 type Data struct {
 	AllArtists     []Artists
 	CurrentArtists []Artists
+	RmDup map[string]bool
 }
 
 type Artists struct {

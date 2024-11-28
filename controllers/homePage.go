@@ -5,6 +5,7 @@ import (
 
 	"groupietracker/cache"
 	"groupietracker/models"
+	"groupietracker/utils"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +32,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ArtistsData.CurrentArtists = ArtistsData.AllArtists
+
+	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.RmDup)
 
 	err := RenderTempalte(w, "./views/index.html", ArtistsData, http.StatusOK)
 	if err != nil {
