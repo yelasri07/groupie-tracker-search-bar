@@ -4,6 +4,7 @@ type Data struct {
 	AllArtists     []Artists
 	CurrentArtists []Artists
 	RmDup map[string]string
+	HomePage bool
 }
 
 type Artists struct {

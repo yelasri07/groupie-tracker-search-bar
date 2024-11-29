@@ -51,6 +51,8 @@ func Search(searchValue string) (models.Data, error) {
 
 	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.AllArtists, ArtistsData.RmDup)
 
+	ArtistsData.HomePage = true
+
 	var firstSearch bool
 	for _, artist := range ArtistsData.AllArtists {
 		firstSearch = false
