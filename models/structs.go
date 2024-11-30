@@ -3,7 +3,7 @@ package models
 type Data struct {
 	AllArtists     []Artists
 	CurrentArtists []Artists
-	RmDup map[string]string
+	Duplicates map[string]string
 	HomePage bool
 }
 

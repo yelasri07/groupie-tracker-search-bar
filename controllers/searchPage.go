@@ -33,7 +33,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 	Search(strings.ToLower(searchValue), &artists)
 
-	artists.RmDup = utils.RemoveDuplicates(artists.AllArtists)
+	artists.Duplicates = utils.RemoveDuplicates(artists.AllArtists)
 	artists.HomePage = true
 
 	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)

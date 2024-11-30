@@ -7,19 +7,24 @@ import (
 )
 
 func RemoveDuplicates(artists []models.Artists) map[string]string {
-	RmDup := make(map[string]string)
-	for _, artist := range artists {
-		RmDup[artist.Name] = "artist/band"
-		RmDup[artist.FirstAlbum] = "First Album"
-		RmDup[strconv.Itoa(artist.CreationDate)] = "Creation Date"
-		for _, member := range artist.Members {
-			RmDup[member] = "member"
-		}
+	var locations []models.Locations
+	models.FetchAPI("https://groupietrackers.herokuapp.com/api/locations",&locations)
 
-		for _, location := range artist.Loca.Locations {
-			RmDup[location] = "location"
+	duplicates := make(map[string]string)
+	for _, artist := range artists {
+		duplicates[artist.Name] = "artist/band"
+		duplicates[artist.FirstAlbum] = "first album"
+		duplicates[strconv.Itoa(artist.CreationDate)] = "creation date"
+		for _, member := range artist.Members {
+			duplicates[member] = "member"
 		}
 	}
 
-	return RmDup
+	for _, location := range locations{
+		for _, loca := range location.Locations {
+			duplicates[loca] = "location"
+		}
+	}
+
+	return duplicates
 }

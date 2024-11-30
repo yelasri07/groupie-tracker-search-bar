@@ -28,7 +28,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
 
 	artists.CurrentArtists = artists.AllArtists
-	artists.RmDup = utils.RemoveDuplicates(artists.AllArtists)
+	artists.Duplicates = utils.RemoveDuplicates(artists.AllArtists)
 
 	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
 	if err != nil {
