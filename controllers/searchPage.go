@@ -23,20 +23,13 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var artists models.Data
-	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.AllArtists)
-	if err != nil {
-		renderError(w, "Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
 
 	Search(strings.ToLower(searchValue), &artists)
 
 	artists.Duplicates = utils.RemoveDuplicates(artists.AllArtists)
 	artists.HomePage = true
 
-	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
+	err := RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
@@ -44,6 +37,11 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Search(searchValue string, artists *models.Data) {
+	var locations models.IndexLocations
+	models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.AllArtists)
+	models.FetchAPI("https://groupietrackers.herokuapp.com/api/locations", &locations)
+
+	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
@@ -67,11 +65,15 @@ func Search(searchValue string, artists *models.Data) {
 			}
 
 			if !firstSearch {
-				models.FetchAPI(artist.Locations, &artist.Loca)
-				for _, localtion := range artist.Loca.Locations {
-					if strings.Contains(strings.ToLower(localtion), searchValue) {
-						firstSearch = true
-						break
+				idLocation := strings.Split(artist.Locations, "/")[5]
+				for _, location := range locations.Index {
+					if idLocation == strconv.Itoa(location.ID) {
+						for _, loca := range location.Locations {
+							if strings.Contains(strings.ToLower(loca), searchValue) {
+								firstSearch = true
+								break
+							}
+						}
 					}
 				}
 			}
