@@ -7,8 +7,8 @@ import (
 )
 
 func RemoveDuplicates(artists []models.Artists) map[string]string {
-	var locations []models.Locations
-	models.FetchAPI("https://groupietrackers.herokuapp.com/api/locations",&locations)
+	var locations models.IndexLocations
+	models.FetchAPI("https://groupietrackers.herokuapp.com/api/locations", &locations)
 
 	duplicates := make(map[string]string)
 	for _, artist := range artists {
@@ -20,7 +20,7 @@ func RemoveDuplicates(artists []models.Artists) map[string]string {
 		}
 	}
 
-	for _, location := range locations{
+	for _, location := range locations.Index {
 		for _, loca := range location.Locations {
 			duplicates[loca] = "location"
 		}

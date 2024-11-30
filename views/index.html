@@ -51,23 +51,9 @@
           required
         />
         <datalist id="artists">
-          {{range $key, $value := .RmDup}}
+          {{range $key, $value := .Duplicates}}
           <option value="{{$key}}">{{$key}} - {{$value}}</option>
-      {{end}}
-
-
-<!--           
-          {{range .AllArtists}}
-          <option value="{{.Name}}">{{.Name}} - artist/band</option>
-          {{range .Members}}
-          <option value="{{.}}">{{.}} - member</option>
-          {{end}} {{range .Loca.Locations}}
-          <option value="{{.}}">{{.}} - location</option>
-          {{end}} {{if .CreationDate}}
-          <option value="{{.CreationDate}}">{{.CreationDate}} - Creation Date</option>
-          {{end}} {{if .FirstAlbum}}
-          <option value="{{.FirstAlbum}}">{{.FirstAlbum}} - First Album</option>
-          {{end}} {{end}} -->
+          {{end}}
         </datalist>
         <button type="submit">Search</button>
       </form>
@@ -83,6 +69,5 @@
       {{end}}
     </div>
 
-    <script src="assets/js/script.js"></script>
   </body>
 </html>
