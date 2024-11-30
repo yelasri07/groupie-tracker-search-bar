@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"groupietracker/cache"
 	"groupietracker/models"
 	"groupietracker/utils"
 )
@@ -19,25 +18,19 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var ArtistsData models.Data
+	var artists models.Data
 
-	if cachedData, ok := cache.GetFromCache("Artists"); ok {
-		ArtistsData.AllArtists = cachedData.([]models.Artists)
-	} else {
-		err := cache.SaveToCache(&ArtistsData.AllArtists, "Artists")
-		if err != nil {
-			renderError(w, "Server Error", http.StatusInternalServerError)
-			return
-		}
+	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.AllArtists)
+	if err != nil {
+		renderError(w, "Server Error", http.StatusInternalServerError)
 	}
 
-	ArtistsData.CurrentArtists = ArtistsData.AllArtists
+	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
 
-	ArtistsData.RmDup = make(map[string]string)
+	artists.CurrentArtists = artists.AllArtists
+	artists.RmDup = utils.RemoveDuplicates(artists.AllArtists)
 
-	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.AllArtists, ArtistsData.RmDup)
-
-	err := RenderTempalte(w, "./views/index.html", ArtistsData, http.StatusOK)
+	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return

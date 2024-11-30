@@ -6,7 +6,8 @@ import (
 	"groupietracker/models"
 )
 
-func RemoveDuplicates(artists []models.Artists, RmDup map[string]string) map[string]string {
+func RemoveDuplicates(artists []models.Artists) map[string]string {
+	RmDup := make(map[string]string)
 	for _, artist := range artists {
 		RmDup[artist.Name] = "artist/band"
 		RmDup[artist.FirstAlbum] = "First Album"

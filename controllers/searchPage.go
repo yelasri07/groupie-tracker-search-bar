@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 
-	"groupietracker/cache"
 	"groupietracker/models"
 	"groupietracker/utils"
 )
@@ -18,70 +18,71 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 	searchValue := strings.TrimSpace(r.URL.Query().Get("s"))
 	if searchValue == "" || len(searchValue) > 100 {
-		renderError(w, "Bad Request", http.StatusBadRequest)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	ArtistsData, err := Search(strings.ToLower(searchValue))
+	var artists models.Data
+	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.AllArtists)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = RenderTempalte(w, "./views/index.html", ArtistsData, http.StatusOK)
+	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
+
+	Search(strings.ToLower(searchValue), &artists)
+
+	artists.RmDup = utils.RemoveDuplicates(artists.AllArtists)
+	artists.HomePage = true
+
+	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 		return
 	}
 }
 
-func Search(searchValue string) (models.Data, error) {
-	var ArtistsData models.Data
+func Search(searchValue string, artists *models.Data) {
+	var wg sync.WaitGroup
+	var mu sync.Mutex
 
-	if cachedArtistsData, ok := cache.GetFromCache("Artists"); ok {
-		ArtistsData.AllArtists = cachedArtistsData.([]models.Artists)
-	} else {
-		err := cache.SaveToCache(&ArtistsData.AllArtists, "Artists")
-		if err != nil {
-			return models.Data{}, err
-		}
+	for _, artist := range artists.AllArtists {
+		wg.Add(1)
+		go func(artist models.Artists) {
+			defer wg.Done()
+
+			firstSearch := false
+			if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
+				artist.FirstAlbum == searchValue ||
+				strconv.Itoa(artist.CreationDate) == searchValue {
+				firstSearch = true
+			}
+
+			for _, member := range artist.Members {
+				if strings.Contains(strings.ToLower(member), searchValue) {
+					firstSearch = true
+					break
+				}
+			}
+
+			if !firstSearch {
+				models.FetchAPI(artist.Locations, &artist.Loca)
+				for _, localtion := range artist.Loca.Locations {
+					if strings.Contains(strings.ToLower(localtion), searchValue) {
+						firstSearch = true
+						break
+					}
+				}
+			}
+
+			if firstSearch {
+				mu.Lock()
+				artists.CurrentArtists = append(artists.CurrentArtists, artist)
+				mu.Unlock()
+			}
+		}(artist)
 	}
 
-	ArtistsData.RmDup = make(map[string]string)
-
-	ArtistsData.RmDup = utils.RemoveDuplicates(ArtistsData.AllArtists, ArtistsData.RmDup)
-
-	ArtistsData.HomePage = true
-
-	var firstSearch bool
-	for _, artist := range ArtistsData.AllArtists {
-		firstSearch = false
-
-		if strings.Contains(strings.ToLower(artist.Name), searchValue) ||
-			artist.FirstAlbum == searchValue ||
-			strconv.Itoa(artist.CreationDate) == searchValue {
-			firstSearch = true
-		}
-
-		for _, member := range artist.Members {
-			if strings.Contains(strings.ToLower(member), searchValue) {
-				firstSearch = true
-				break
-			}
-		}
-
-		for _, localtion := range artist.Loca.Locations {
-			if strings.Contains(strings.ToLower(localtion), searchValue) {
-				firstSearch = true
-				break
-			}
-		}
-
-		if firstSearch {
-			ArtistsData.CurrentArtists = append(ArtistsData.CurrentArtists, artist)
-		}
-
-	}
-
-	return ArtistsData, nil
+	wg.Wait()
 }

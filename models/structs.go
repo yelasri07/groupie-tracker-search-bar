@@ -19,7 +19,7 @@ type Artists struct {
 	CongertDates string `json:"concertDates"`
 	ConDT        Dates
 	Relations    string `json:"relations"`
-	Rela         Relation
+	Rela         Relations
 }
 
 type Locations struct {
@@ -33,7 +33,7 @@ type Dates struct {
 	Dates []string `json:"dates"`
 }
 
-type Relation struct {
+type Relations struct {
 	ID             int                 `json:"id"`
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
