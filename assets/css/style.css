@@ -27,7 +27,7 @@ body{
 
 .home {
     position: absolute;
-    top: 64px;
+    top: 2%;
     left: 3%;
     color: #EAEAEA;
     background-color: #1F8AC0;
@@ -57,17 +57,6 @@ body{
 .title p{
     font-weight: 400;
     font-size: 22px;
-}
-
-.play{
-    position: absolute;
-    top: 64px;
-    right: 10%;
-    color: #fff;
-    background-color: #1F8AC0;
-    border-radius: 17px;
-    padding: 10px 20px;
-    cursor: pointer;
 }
 
 .music2{
@@ -192,6 +181,15 @@ body{
     }
     .title p{
         font-size: 18px;
+    }
+    .search form{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search form button{
+        padding: 10px;
     }
 }
 
