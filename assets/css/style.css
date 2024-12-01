@@ -51,6 +51,7 @@ body{
     font-family: "Jacquard 24", sans-serif;
     font-size: 120px;
     font-weight: 400;
+    z-index: 999;
 }
 
 .title p{

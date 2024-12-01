@@ -20,15 +20,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	var artists models.Data
 
-	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.AllArtists)
+	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.CurrentArtists)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
 	}
 
-	artists.AllArtists[20].Image = "./assets/img/3ib.jpg"
+	artists.CurrentArtists[20].Image = "./assets/img/3ib.jpg"
 
-	artists.CurrentArtists = artists.AllArtists
-	artists.Duplicates = utils.RemoveDuplicates(artists.AllArtists)
+	artists.Duplicates = utils.RemoveDuplicates(artists.CurrentArtists)
 
 	err = RenderTempalte(w, "./views/index.html", artists, http.StatusOK)
 	if err != nil {
