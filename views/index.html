@@ -41,15 +41,21 @@
       <h1>Groupie Tracker</h1>
       <p>All bands in one place</p>
     </div>
+
+    <!-- Input to search for artists by name, members, 
+     creation data, first album and locations -->
     <div class="search">
       <form action="/sch" method="GET">
-        <input
+        <div class="focus">
+          <input
           list="artists"
           name="s"
           type="search"
           placeholder="Type your search..."
           required
         />
+        <div></div>
+        </div>
         <datalist id="artists">
           {{range $key, $value := .Duplicates}}
           <option value="{{$key}}">{{$key}} - {{$value}}</option>
@@ -58,6 +64,7 @@
         <button type="submit">Search</button>
       </form>
     </div>
+
     <div class="container">
       {{range .CurrentArtists}}
       <div>
