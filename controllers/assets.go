@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// Hander to serve css and images
 func AssetsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		renderError(w, "Method Not Allowed", http.StatusMethodNotAllowed)

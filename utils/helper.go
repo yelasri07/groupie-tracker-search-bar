@@ -6,8 +6,11 @@ import (
 	"groupietracker/models"
 )
 
+
+// Remove duplicates from input search like "Locations"
 func RemoveDuplicates(artists []models.Artists) map[string]string {
 	var locations models.IndexLocations
+
 	models.FetchAPI("https://groupietrackers.herokuapp.com/api/locations", &locations)
 
 	duplicates := make(map[string]string)

@@ -7,6 +7,8 @@ import (
 	"groupietracker/utils"
 )
 
+
+// Home page to view all artists
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		renderError(w, "Page Not Found", http.StatusNotFound)

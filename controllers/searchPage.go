@@ -10,6 +10,7 @@ import (
 	"groupietracker/utils"
 )
 
+// search page to view artists after search
 func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		renderError(w, "Method Not Allowed", http.StatusMethodNotAllowed)

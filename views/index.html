@@ -62,16 +62,21 @@
       </form>
     </div>
 
+    {{if .CurrentArtists}}
     <div class="container">
-      {{range .CurrentArtists}}
-      <div>
-        <a href="/infos?id={{.ID}}">
-          <img loading="lazy" width="240" height="240" src="{{.Image}}" />
-          <h4>{{.Name}}</h4>
-        </a>
-      </div>
-      {{end}}
+        {{range .CurrentArtists}}
+        <div>
+          <a href="/infos?id={{.ID}}">
+            <img loading="lazy" width="240" height="240" src="{{.Image}}" />
+            <h4>{{.Name}}</h4>
+          </a>
+        </div>
+       {{end}}
     </div>
+    {{else}}
+      <h1 style="color: white; width: 100%;
+      text-align: center; margin-top: 50px;">Sorry, we couldn't find any data. Please try again.🥺</h1>
+    {{end}}
 
   </body>
 </html>

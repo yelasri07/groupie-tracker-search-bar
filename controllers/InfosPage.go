@@ -7,6 +7,8 @@ import (
 	"groupietracker/models"
 )
 
+
+// info page to view all artists informations
 func InfosHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		renderError(w, "Method Not Allowed", http.StatusMethodNotAllowed)
