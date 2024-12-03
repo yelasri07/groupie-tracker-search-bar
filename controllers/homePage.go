@@ -25,6 +25,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	err := models.FetchAPI("https://groupietrackers.herokuapp.com/api/artists", &artists.CurrentArtists)
 	if err != nil {
 		renderError(w, "Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	artists.CurrentArtists[20].Image = "./assets/img/3ib.jpg"
